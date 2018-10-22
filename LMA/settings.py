@@ -31,13 +31,15 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'student',
+    'easy_pdf',
+    # 'django-matrix-field',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'student',
 ]
 
 MIDDLEWARE = [
@@ -125,3 +127,9 @@ STATIC_ROOT=os.path.join(os.path.dirname(BASE_DIR),"static_cdn")
 
 MEDIA_ROOT = os.path.join(os.path.dirname(BASE_DIR),"media")
 MEDIA_URL = '/media/'
+
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
+
+FILE_UPLOAD_HANDLERS = ("django_excel.ExcelMemoryFileUploadHandler",
+                        "django_excel.TemporaryExcelFileUploadHandler")
