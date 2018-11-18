@@ -26,7 +26,11 @@ def index(request):
         # getting value from each cell in row
         for row in worksheet.iter_rows():
             row_data = list()
-            for cell in row:
+            for cell in row[:1]:
+                # if str(cell)[15]=='A':
+                row_data.append(str(cell.value))
+            for cell in row[-1:]:
+                # if str(cell)[15]=='A':
                 row_data.append(str(cell.value))
             excel_data.append(row_data)
 
