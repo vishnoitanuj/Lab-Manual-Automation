@@ -1,0 +1,101 @@
+{% extends "base_generic.html" %}
+
+{% block content %}
+
+
+
+
+
+<h1>Profile<small style="font-size: 14px"> <a href="{% url 'edit_profile'%}"> Edit Account Settings</a>
+|<a href="{% url 'edit_user_profile'%}"> Edit Profile data</a></small></h1>
+
+ 
+
+<hr>
+
+
+
+
+
+<div class="row">
+
+<div class="col-sm-6">
+<h1 class="text-left"> {{ user.userprofile.last_name}} {{ user.userprofile.first_name}}</h1> 
+<p>{{ user.userprofile.desciption }}</p>
+
+</div>
+<div class="col-sm-6">
+{% if user.userprofile.profile_image %}
+<img class="img-circle" width="200px" height="200px" src= "{{ user.userprofile.profile_image.url }}">
+{% endif %}
+
+</div>
+
+
+
+</div>
+
+<pre><h6>email me at:</h6> {{ user.email }}</pre>
+
+
+
+
+
+
+<div class="row">
+<div class="col-sm-4">
+<h1>My Work</h1>
+{% for blog in user.userprofile.blog_set.all  %}
+
+	
+	<div class="container" class="row">
+		<a href="{% url 'blog-detail' blog.pk  %}">{{blog}}</a>
+		<div > 
+
+ 		<a class="btn btn-warning" style="color: white" href="{% url 'update' blog.pk %}">Edit</a>
+ 		<a  class="btn btn-danger" style="color: white" href="{% url 'delete' blog.pk %}"> Delete</a>
+ 		
+ 		</div>
+ 	<div>
+ </div>
+ 	</div>
+
+{% endfor %}
+  </div>
+
+
+
+  <div class="col-sm-4">
+  	  <h1>My Cart</h1>
+  <div>
+	{% for cart in user.cart_set.all  %}
+
+	<div class="container">
+<a href="{% url 'item-detail' cart.product.pk %}">	{{ cart.product }} </a>
+
+	</div>
+	{% endfor %}  	
+  </div>
+  </div>
+
+<div class="col-sm-4">
+<h1>Following</h1>
+
+<div>
+	{% for following in follows_set.all %}
+	<div class="container">
+		<a href=""> {{ follwoing }}</a>
+
+	</div>
+{% endfor %}  
+</div>
+
+
+</div>
+</div>
+
+
+
+
+           
+{% endblock %}

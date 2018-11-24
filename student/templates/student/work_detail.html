@@ -1,9 +1,0 @@
-{% extends 'student/base.html'%}
-
-{% block body %}
-<h1>{{ object.title }}</h1>
-<p>{{ object.upload_data }}</p>
-<p>Upload Date: {{ object.reporter }}</p>
-<p>Published: {{ object.pub_date|date }}</p>
-<p>Date: {{ now|date }}</p>
-{% endblock %}
