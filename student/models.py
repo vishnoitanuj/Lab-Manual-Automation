@@ -2,20 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import FileExtensionValidator
 from django.db.models.signals import post_save
+from django.urls import reverse
 
 # Create your models here.
-class Assignment(models.Model):
-    name = models.CharField(max_length=200, help_text='Enter assignment number(e.g. Experiment 1)')
-    Aim = models.CharField(max_length=500, default='Perform the following')
-    def __str__(self):
-        return self.name
-
-class Work(models.Model):
-    title = models.ForeignKey('Assignment',on_delete=models.SET_NULL, null=True)
-    upload_data = models.DateTimeField(auto_now_add=True, blank=True)
-    deadline = models.DateTimeField(blank=True, null=True)
-    pdf =  models.FileField(null=True, blank=True, validators=[FileExtensionValidator(['pdf'])])
-
 class UserProfile(models.Model):
 	user=models.OneToOneField(User,on_delete=models.CASCADE)
 	first_name=models.CharField(max_length=100,default='')
@@ -38,3 +27,21 @@ def create_profile(sender, **kwargs):
 		user_profile=UserProfile.objects.create(user=kwargs['instance'])
 
 post_save.connect(create_profile,sender=User)
+
+class Assignment(models.Model):
+	author=models.ForeignKey("UserProfile", on_delete=models.SET_NULL, null=True)
+    name = models.CharField(max_length=200, help_text='Enter assignment number(e.g. Experiment 1)')
+    aim = models.CharField(max_length=500, default='Perform the following')
+	timestamp=models.DateTimeField(auto_now=False,auto_now_add=True)
+   class Meta:
+		ordering = ["-timestamp"]
+	def get_absolute_url(self):	
+		return reverse('blog-detail',args=[str(self.id)])
+
+	def __str__(self):
+		return (self.name)
+class Work(models.Model):
+    title = models.ForeignKey('Assignment',on_delete=models.SET_NULL, null=True)
+    upload_data = models.DateTimeField(auto_now_add=True, blank=True)
+    deadline = models.DateTimeField(blank=True, null=True)
+    pdf =  models.FileField(null=True, blank=True, validators=[FileExtensionValidator(['pdf'])])
