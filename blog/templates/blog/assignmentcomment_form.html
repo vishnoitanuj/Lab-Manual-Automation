@@ -1,7 +1,7 @@
 {% extends "base_generic.html" %}
 
 {% block content %}
-<p>Post your comment for: <a href="{% url 'blog-detail' blog.pk %}">{{blog.name}}</a></p>
+<p>Post your work done here: <a href="{% url 'blog-detail' blog.pk %}">{{assignment.name}}</a></p>
 
 <form action="" method="post">
     {% csrf_token %}

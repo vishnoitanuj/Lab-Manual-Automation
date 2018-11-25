@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
-from .models import Blog, UserProfile
+from .models import Assignment, UserProfile
 from pagedown.widgets import PagedownWidget
 
 class RegistrationForm(UserCreationForm):
@@ -47,15 +47,13 @@ class EditUserProfileForm(forms.ModelForm):
         model=UserProfile
         fields=('first_name' , 'last_name', "desciption", "profile_image" )
 
-class BlogForm(forms.ModelForm):
+class AssignmentForm(forms.ModelForm):
     publish=forms.DateField(widget=forms.SelectDateWidget)
     content = forms.CharField(widget=PagedownWidget())
     class Meta:
-        model = Blog
+        model = Assignment
         fields = [
             "title",
-            "content",
-            "image",
-            "draft",
+            "file_pdf",
             "publish",
         ]

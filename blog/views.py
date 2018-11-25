@@ -4,7 +4,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.views import generic
 from django.contrib.auth.models import User
 from .forms import RegistrationForm, EditProfileForm, EditUserProfileForm
-from .forms import BlogForm
+from .forms import AssignmentForm
 from django.shortcuts import render,redirect
 from .models import *
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -30,8 +30,8 @@ def home(request):
 		context={}
 		)
 
-class BlogListView(generic.ListView):
-	model=Blog
+class AssignmentListView(generic.ListView):
+	model=Assignment
 	paginate_by = 10
 
 class ItemListView(generic.ListView):
@@ -43,24 +43,24 @@ class ItemDetailView(generic.DetailView):
 
 
 
-class BlogDetailView(LoginRequiredMixin,generic.DetailView):
-	model=Blog
+class AssignmentDetailView(LoginRequiredMixin,generic.DetailView):
+	model=Assignment
 	
 
 
-class BlogCommentCreate(LoginRequiredMixin, generic.CreateView):
-    model = BlogComment
-    fields = ['description',]
+class AssignmentCommentCreate(LoginRequiredMixin, generic.CreateView):
+    model = AssignmentComment
+    fields = ['inference','excel_sheet']
 
     def get_context_data(self, **kwargs):
-        context = super(BlogCommentCreate, self).get_context_data(**kwargs)
-        context['blog'] = get_object_or_404(Blog, pk = self.kwargs['pk'])
+        context = super(AssignmentCommentCreate, self).get_context_data(**kwargs)
+        context['blog'] = get_object_or_404(Assignment, pk = self.kwargs['pk'])
         return context
         
     def form_valid(self, form):
         form.instance.author = self.request.user
-        form.instance.blog=get_object_or_404(Blog, pk = self.kwargs['pk'])
-        return super(BlogCommentCreate, self).form_valid(form)
+        form.instance.blog=get_object_or_404(Assignment, pk = self.kwargs['pk'])
+        return super(AssignmentCommentCreate, self).form_valid(form)
 
     def get_success_url(self): 
         return reverse('blog-detail', kwargs={'pk': self.kwargs['pk'],})
@@ -176,9 +176,9 @@ def edit_user_profile(request):
 
 
 
-class BlogCreateView(LoginRequiredMixin,generic.CreateView):
-	model=Blog
-	form_class=BlogForm
+class AssignmentCreateView(LoginRequiredMixin,generic.CreateView):
+	model=Assignment
+	form_class=AssignmentForm
 	template_name='blog_create.html'
 
 	def form_valid(self,form):
@@ -190,16 +190,16 @@ class BlogCreateView(LoginRequiredMixin,generic.CreateView):
 
 
 
-class BlogUpdate(LoginRequiredMixin,generic.UpdateView):
-	model=Blog
-	fields=['title','content','image']
+class AssignmentUpdate(LoginRequiredMixin,generic.UpdateView):
+	model=Assignment
+	fields=['title','file_pdf']
 	template_name_suffix='_update_form'
 
 
 
 
 
-class BlogDelete(LoginRequiredMixin,generic.DeleteView):
+class AssignmentDelete(LoginRequiredMixin,generic.DeleteView):
 	
-	model=Blog
+	model=Assignment
 	success_url=reverse_lazy('profile')

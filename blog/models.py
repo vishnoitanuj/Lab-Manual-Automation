@@ -46,18 +46,17 @@ class Cart(models.Model):
 
 
 	
-class Blog(models.Model):
+class Assignment(models.Model):
 	title=models.CharField(max_length=200)
 
 	author=models.ForeignKey("UserProfile", on_delete=models.SET_NULL, null=True)
-	image=models.FileField(null=True,blank=True)
+	# image=models.FileField(null=True,blank=True)
 	timestamp=models.DateTimeField(auto_now=False,auto_now_add=True)
 	
-	draft=models.BooleanField(default=False)
+	# draft=models.BooleanField(default=False)
 	publish=models.DateField(auto_now=False,auto_now_add=False)
 	
-	content=models.TextField(null=True)
-	
+	file_pdf=models.FileField(null=True, blank=True)
 	
 
 	class Meta:
@@ -69,18 +68,19 @@ class Blog(models.Model):
 		return (self.title)
 
 
-class BlogComment(models.Model):
+class AssignmentComment(models.Model):
     
-    description = models.TextField(max_length=1000, help_text="Enter comment about blog here.")
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    post_date = models.DateTimeField(auto_now_add=True)
-    blog= models.ForeignKey(Blog, on_delete=models.CASCADE)
+	inference = models.TextField(max_length=1000, help_text="Upload the observation Table excel file here")
+	author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+	excel_sheet = models.FileField(null=True, blank=True)
+	post_date = models.DateTimeField(auto_now_add=True)
+	blog= models.ForeignKey(Assignment, on_delete=models.CASCADE)
     
-    class Meta:
-        ordering = ["post_date"]
+	class Meta:
+		ordering = ["post_date"]
 
-    def __str__(self):
-        return(self.blog.title)
+	def __str__(self):
+		return(self.blog.title)
 
 class ItemComment(models.Model):
 
