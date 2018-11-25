@@ -60,6 +60,7 @@ class AssignmentCommentCreate(LoginRequiredMixin, generic.CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         form.instance.blog=get_object_or_404(Assignment, pk = self.kwargs['pk'])
+		cleaned_data = self.cleaned_data
         return super(AssignmentCommentCreate, self).form_valid(form)
 
     def get_success_url(self): 
