@@ -20,6 +20,9 @@ from django.shortcuts import get_object_or_404
 from django.http import HttpResponseForbidden
 from django.views.generic import FormView
 from django.core.urlresolvers import reverse
+from django.db.models import Q
+
+
 # Create your views here.
 def home(request):
 	#num_users=Author.objects.count()
@@ -49,22 +52,33 @@ class AssignmentDetailView(LoginRequiredMixin,generic.DetailView):
 
 
 class AssignmentCommentCreate(LoginRequiredMixin, generic.CreateView):
-    model = AssignmentComment
-    fields = ['inference','excel_sheet']
+	model = AssignmentComment
+	fields = ['inference','excel_sheet','result']
 
-    def get_context_data(self, **kwargs):
-        context = super(AssignmentCommentCreate, self).get_context_data(**kwargs)
-        context['blog'] = get_object_or_404(Assignment, pk = self.kwargs['pk'])
-        return context
+	def get_context_data(self, **kwargs):
+		context = super(AssignmentCommentCreate, self).get_context_data(**kwargs)
+		context['blog'] = get_object_or_404(Assignment, pk = self.kwargs['pk'])
+		return context
+	
         
-    def form_valid(self, form):
-        form.instance.author = self.request.user
-        form.instance.blog=get_object_or_404(Assignment, pk = self.kwargs['pk'])
-		cleaned_data = self.cleaned_data
-        return super(AssignmentCommentCreate, self).form_valid(form)
+	def form_valid(self, form):
+		form.instance.author = self.request.user
+		form.instance.blog=get_object_or_404(Assignment, pk = self.kwargs['pk'])
+		return super(AssignmentCommentCreate, self).form_valid(form)
 
-    def get_success_url(self): 
-        return reverse('blog-detail', kwargs={'pk': self.kwargs['pk'],})
+	def clean(self):
+		try:
+			qs = AssignmentComment.objects.filter(name=self.cleaned_data.get('result'))
+			if self.instance.pk is not None:
+				qs = qs.filter(~Q(pk=self.instance.pk))
+				course = qs.get()
+				if course>0 and course<100:
+					self.instance.autocheck = True
+		except AssignmentComment.DoesNotExist:
+			course = None
+
+	def get_success_url(self): 
+		return reverse('blog-detail', kwargs={'pk': self.kwargs['pk'],})
 
 
 

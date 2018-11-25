@@ -57,6 +57,8 @@ class Assignment(models.Model):
 	publish=models.DateField(auto_now=False,auto_now_add=False)
 	
 	file_pdf=models.FileField(null=True, blank=True)
+	Rmin = models.IntegerField(default=0)
+	Rmax = models.IntegerField(default=800)
 	
 
 	class Meta:
@@ -75,7 +77,10 @@ class AssignmentComment(models.Model):
 	excel_sheet = models.FileField(null=True, blank=True, default='test.xlsx')
 	post_date = models.DateTimeField(auto_now_add=True)
 	blog= models.ForeignKey(Assignment, on_delete=models.CASCADE)
+	result = models.IntegerField(default=0)
+	autocheck = models.BooleanField(default=True)
 	checked = models.BooleanField(default=False)
+
     
 	class Meta:
 		ordering = ["post_date"]
