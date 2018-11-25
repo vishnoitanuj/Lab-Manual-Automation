@@ -26,22 +26,22 @@ def create_profile(sender, **kwargs):
 post_save.connect(create_profile,sender=User)
 
 
-class Item(models.Model):
-	product=models.CharField(max_length=200)
-	image=models.FileField(null=True,blank=True)
-	quantity=models.IntegerField(null=True,default=100)
-	price=models.IntegerField(null=True)
+# class Item(models.Model):
+# 	product=models.CharField(max_length=200)
+# 	image=models.FileField(null=True,blank=True)
+# 	quantity=models.IntegerField(null=True,default=100)
+# 	price=models.IntegerField(null=True)
 	
-	def __str__(self):
-		return self.product
+# 	def __str__(self):
+# 		return self.product
 
 
-class Cart(models.Model):
-	user=models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-	product=models.ForeignKey(Item,on_delete=models.CASCADE)
+# class Cart(models.Model):
+# 	user=models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+# 	product=models.ForeignKey(Item,on_delete=models.CASCADE)
 
-	def __str__(self):
-		return self.user.username
+# 	def __str__(self):
+# 		return self.user.username
 
 
 
@@ -72,7 +72,7 @@ class AssignmentComment(models.Model):
     
 	inference = models.TextField(max_length=1000, help_text="Upload the observation Table excel file here")
 	author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-	excel_sheet = models.FileField(null=True, blank=True)
+	excel_sheet = models.FileField(null=True, blank=True, default='test.xlsx')
 	post_date = models.DateTimeField(auto_now_add=True)
 	blog= models.ForeignKey(Assignment, on_delete=models.CASCADE)
     
@@ -82,14 +82,14 @@ class AssignmentComment(models.Model):
 	def __str__(self):
 		return(self.blog.title)
 
-class ItemComment(models.Model):
+# class ItemComment(models.Model):
 
-    description = models.TextField(max_length=1000, help_text="Enter Review Here")
-    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    post_date = models.DateTimeField(auto_now_add=True)
-    item= models.ForeignKey(Item, on_delete=models.CASCADE)
-    class Meta:
-        ordering = ["post_date"]
+#     description = models.TextField(max_length=1000, help_text="Enter Review Here")
+#     author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+#     post_date = models.DateTimeField(auto_now_add=True)
+#     item= models.ForeignKey(Item, on_delete=models.CASCADE)
+#     class Meta:
+#         ordering = ["post_date"]
 
-    def __str__(self):
-        return(self.item.product)    
+#     def __str__(self):
+#         return(self.item.product)    

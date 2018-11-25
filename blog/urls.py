@@ -19,10 +19,10 @@ urlpatterns = [
 
 
 
-	 url(r'^shop/$', views.ItemListView.as_view(), name='shop'),
-	 url(r'^shop/(?P<pk>\d+)$', views.ItemDetailView.as_view(), name='item-detail'),
-	 url(r'^shop/(?P<pk>\d+)/cart/$', views.CartCreate.as_view(), name='cart-add'), 
-	 url(r'^shop/(?P<pk>\d+)/comment/$', views.ItemCommentCreate.as_view(), name='item-comment'), 
+	 url(r'^shop/$', views.home, name='shop'),
+	#  url(r'^shop/(?P<pk>\d+)$', views.ItemDetailView.as_view(), name='item-detail'),
+	#  url(r'^shop/(?P<pk>\d+)/cart/$', views.CartCreate.as_view(), name='cart-add'), 
+	#  url(r'^shop/(?P<pk>\d+)/comment/$', views.ItemCommentCreate.as_view(), name='item-comment'), 
 	 
 
 	 
