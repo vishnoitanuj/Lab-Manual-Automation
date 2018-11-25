@@ -75,6 +75,7 @@ class AssignmentComment(models.Model):
 	excel_sheet = models.FileField(null=True, blank=True, default='test.xlsx')
 	post_date = models.DateTimeField(auto_now_add=True)
 	blog= models.ForeignKey(Assignment, on_delete=models.CASCADE)
+	checked = models.BooleanField(default=False)
     
 	class Meta:
 		ordering = ["post_date"]
